@@ -53,35 +53,42 @@
       "location": "South Dakota",
       "event": "Vacation — a cabin in the woods",
       "type": "vacation",
-      "icon": "🌲"
+      "icon": "🌲",
+      "coordinates": [-103.7, 44.0],
+      "zoom": 7.5,
+      "note": "Precision: deep in the Black Hills National Forest. Cell coverage: aspirational."
     },
     {
       "start": "2026-07-27",
       "end": "2026-07-29",
       "location": "Minneapolis, Minnesota",
       "event": "PEARC26 Conference",
-      "type": "work"
+      "type": "work",
+      "icon": "🛶"
     },
     {
       "start": "2026-08-05",
       "end": "2026-08-07",
       "location": "Chicago, Illinois",
       "event": "Work trip",
-      "type": "work"
+      "type": "work",
+      "icon": "🏙️"
     },
     {
       "start": "2026-08-19",
       "end": "2026-08-21",
       "location": "Madison, Wisconsin",
       "event": "Work trip",
-      "type": "work"
+      "type": "work",
+      "icon": "🧀"
     },
     {
       "start": "2026-09-07",
       "end": "2026-09-13",
       "location": "Amsterdam, Netherlands",
       "event": "IRIS-HEP Retreat",
-      "type": "work"
+      "type": "work",
+      "icon": "🌷"
     }
   ]
 }

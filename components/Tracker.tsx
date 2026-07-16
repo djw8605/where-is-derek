@@ -118,13 +118,30 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         return;
       }
 
+      // An explicit coordinate pins exactly there, no geocoding round-trip.
+      if (trip.coordinates) {
+        if (!cancelled) {
+          setSighting({
+            trip,
+            center: trip.coordinates,
+            precision: trip.note ?? precisionNote("place"),
+            distanceFromHome: haversineMiles(
+              schedule.home.coordinates,
+              trip.coordinates,
+            ),
+          });
+          placeMarker(trip.coordinates, trip.type, undefined, trip.icon, trip.zoom);
+        }
+        return;
+      }
+
       try {
         const geo = await geocode(trip.location, MAPBOX_TOKEN);
         if (cancelled) return;
         setSighting({
           trip,
           center: geo.center,
-          precision: precisionNote(geo.featureType),
+          precision: trip.note ?? precisionNote(geo.featureType),
           distanceFromHome: haversineMiles(schedule.home.coordinates, geo.center),
         });
         placeMarker(geo.center, trip.type, geo.bbox, trip.icon);
@@ -138,6 +155,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
       kind: "work" | "vacation" | "home",
       bbox?: [number, number, number, number],
       icon?: string,
+      zoom?: number,
     ) {
       const map = mapRef.current;
       if (!map) return;
@@ -158,7 +176,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
       if (bbox) {
         map.fitBounds(bbox, { padding: 70, duration: 2200 });
       } else {
-        map.flyTo({ center, zoom: 9.5, duration: 2400 });
+        map.flyTo({ center, zoom: zoom ?? 9.5, duration: 2400 });
       }
     }
 

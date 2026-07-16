@@ -7,6 +7,9 @@ export interface Trip {
   event?: string;
   type: TripType;
   icon?: string; // optional emoji shown on the marker + report card (e.g. "🌲")
+  coordinates?: [number, number]; // [lng, lat] — pins here directly, skipping geocoding
+  zoom?: number; // map zoom to use with an explicit coordinate (default 9.5)
+  note?: string; // custom precision line; overrides the auto-generated one
 }
 
 export interface HomeBase {
