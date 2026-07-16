@@ -6,6 +6,48 @@
   },
   "trips": [
     {
+      "start": "2026-01-13",
+      "end": "2026-01-14",
+      "location": "Kansas City, Missouri",
+      "event": "GPN Meeting",
+      "type": "work"
+    },
+    {
+      "start": "2026-02-01",
+      "end": "2026-02-04",
+      "location": "New Orleans, Louisiana",
+      "event": "CC* PI Meeting",
+      "type": "work"
+    },
+    {
+      "start": "2026-05-04",
+      "end": "2026-05-08",
+      "location": "San Diego, California",
+      "event": "7NRP Meeting",
+      "type": "work"
+    },
+    {
+      "start": "2026-05-26",
+      "end": "2026-06-04",
+      "location": "Hawaii",
+      "event": "Vacation",
+      "type": "vacation"
+    },
+    {
+      "start": "2026-06-08",
+      "end": "2026-06-12",
+      "location": "Madison, Wisconsin",
+      "event": "HTC Week 26",
+      "type": "work"
+    },
+    {
+      "start": "2026-06-21",
+      "end": "2026-06-25",
+      "location": "Arkansas",
+      "event": "GPN Meeting",
+      "type": "work"
+    },
+    {
       "start": "2026-07-17",
       "end": "2026-07-25",
       "location": "South Dakota",
