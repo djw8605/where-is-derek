@@ -1,0 +1,24 @@
+{
+  "name": "where-is-derek",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A public service for the chronically curious: rough whereabouts of one (1) Derek.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "mapbox-gl": "^3.8.0",
+    "next": "^15.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

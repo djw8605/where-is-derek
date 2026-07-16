@@ -1,0 +1,45 @@
+{
+  "home": {
+    "label": "Home",
+    "location": "Omaha, Nebraska",
+    "coordinates": [-95.9345, 41.2565]
+  },
+  "trips": [
+    {
+      "start": "2026-07-17",
+      "end": "2026-07-25",
+      "location": "South Dakota",
+      "event": "Vacation — a cabin in the woods",
+      "type": "vacation",
+      "icon": "🌲"
+    },
+    {
+      "start": "2026-07-27",
+      "end": "2026-07-29",
+      "location": "Minneapolis, Minnesota",
+      "event": "PEARC26 Conference",
+      "type": "work"
+    },
+    {
+      "start": "2026-08-05",
+      "end": "2026-08-07",
+      "location": "Chicago, Illinois",
+      "event": "Work trip",
+      "type": "work"
+    },
+    {
+      "start": "2026-08-19",
+      "end": "2026-08-21",
+      "location": "Madison, Wisconsin",
+      "event": "Work trip",
+      "type": "work"
+    },
+    {
+      "start": "2026-09-07",
+      "end": "2026-09-13",
+      "location": "Amsterdam, Netherlands",
+      "event": "IRIS-HEP Retreat",
+      "type": "work"
+    }
+  ]
+}
