@@ -11,6 +11,7 @@ import {
   type Trip,
   startOfToday,
   findCurrentTrip,
+  findTripStartingTomorrow,
   completedTrips,
   daysAfieldThisYear,
   formatRange,
@@ -89,8 +90,9 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
           setSighting({
             trip: null,
             center: schedule.home.coordinates,
-            precision:
-              "Precision: high. He is at home in Nebraska, where the horizon is a lifestyle.",
+            precision: findTripStartingTomorrow(schedule.trips, day)
+              ? "Precision: high. He is at home in Nebraska — but the suitcase has migrated to the front door."
+              : "Precision: high. He is at home in Nebraska, where the horizon is a lifestyle.",
             distanceFromHome: 0,
           });
           placeMarker(schedule.home.coordinates, "home");
@@ -176,6 +178,11 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
   const completed = today ? completedTrips(schedule.trips, today).length : 0;
   const afield = today ? daysAfieldThisYear(schedule.trips, today) : 0;
 
+  // Departure eve: a trip begins tomorrow. If today is *also* mid-trip, the
+  // specimen is chaining movements without touching the home range.
+  const departing = today ? findTripStartingTomorrow(schedule.trips, today) : null;
+  const connecting = Boolean(departing && sighting?.trip);
+
   return (
     <main className="wrap">
       <header className="masthead">
@@ -195,9 +202,11 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         <div ref={mapContainer} className="map" />
         <span className="corner">
           {kind
-            ? kind === "home"
-              ? "Signal: strong"
-              : "Signal: roaming"
+            ? departing
+              ? "Signal: restless"
+              : kind === "home"
+                ? "Signal: strong"
+                : "Signal: roaming"
             : "Acquiring…"}
         </span>
 
@@ -234,10 +243,15 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
             <>
               <div className="report-top">
                 <span className="stamp">
-                  <span className="blip" /> {STAMPS[kind]}
+                  <span className="blip" />{" "}
+                  {kind === "home" && departing
+                    ? "Pre-migration staging"
+                    : STAMPS[kind]}
                 </span>
                 <span className={`badge ${BADGES[kind].className}`}>
-                  {BADGES[kind].text}
+                  {kind === "home" && departing
+                    ? "Home range — for now"
+                    : BADGES[kind].text}
                 </span>
               </div>
               <h2>
@@ -270,6 +284,47 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         </div>
       </section>
 
+      {departing && (
+        <section className="advisory" aria-label="Departure advisory" role="alert">
+          <div className="advisory-head">
+            <span className="advisory-kicker">
+              <span className="blip" /> Zugunruhe advisory
+            </span>
+            <span className="advisory-count">T−1 day</span>
+          </div>
+          <h3>
+            {connecting
+              ? "Connecting migration tomorrow"
+              : "Migration departs tomorrow"}
+          </h3>
+          <p>
+            {connecting ? (
+              <>
+                Back-to-back movements on file: the specimen departs{" "}
+                {sighting?.trip?.location} and proceeds directly to{" "}
+                <b>{departing.location}</b> without touching the home range.
+                Layover: none. Laundry status: unresolved.
+              </>
+            ) : (
+              <>
+                The specimen is exhibiting <em>Zugunruhe</em> (n., the
+                pre-migratory restlessness of birds). Field notes: circling the
+                suitcase, checking the {departing.location} forecast hourly,
+                stockpiling snacks. Departure expected at first light.
+              </>
+            )}
+          </p>
+          <div className="advisory-meta">
+            <span>
+              Next range: {departing.icon ? `${departing.icon} ` : ""}
+              {departing.location}
+            </span>
+            <span>{departing.event ?? "Purpose undisclosed"}</span>
+            <span>{formatRange(departing.start, departing.end)}</span>
+          </div>
+        </section>
+      )}
+
       <section className="stats" aria-label="Field statistics">
         <div className="stat">
           <div className="num">{afield}</div>
@@ -295,7 +350,9 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         </div>
         <div className="classified-card">
           <div className="classified-copy">
-            <span className="classified-kicker">Travel antenna: twitching</span>
+            <span className="classified-kicker">
+              {departing ? "Travel antenna: vibrating" : "Travel antenna: twitching"}
+            </span>
             <p>
               Further roaming appears probable. Dates, destinations, and snack
               strategy remain under wraps until a sighting is in progress.
@@ -303,10 +360,18 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
           </div>
           <div className="redacted-file" aria-label="Future itinerary details withheld">
             <span>Next departure</span>
-            <b aria-hidden="true">████████████</b>
+            {departing ? (
+              <b className="leak">Tomorrow</b>
+            ) : (
+              <b aria-hidden="true">████████████</b>
+            )}
             <span>Destination</span>
             <b aria-hidden="true">████████████████</b>
-            <em>Filed under: nice try</em>
+            <em>
+              {departing
+                ? "Filed under: too late to redact"
+                : "Filed under: nice try"}
+            </em>
           </div>
         </div>
       </section>
