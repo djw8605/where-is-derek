@@ -293,8 +293,109 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sight-ring, .stamp .blip { animation: none; }
+  .sight-ring, .stamp .blip, .advisory-kicker .blip, .redacted-file .leak {
+    animation: none;
+  }
   .sight-ring { display: none; }
+}
+
+/* ---------- Zugunruhe advisory (departure eve) ---------- */
+
+.advisory {
+  margin-top: 26px;
+  border: 1.5px solid var(--accent-deep);
+  border-radius: var(--radius);
+  padding: 18px 20px 16px;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 11px,
+      rgba(236, 91, 19, 0.07) 11px,
+      rgba(236, 91, 19, 0.07) 12px
+    ),
+    var(--card);
+  box-shadow: 5px 5px 0 rgba(196, 71, 8, 0.18);
+}
+
+.advisory-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.advisory-kicker {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.advisory-kicker .blip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 1.6s ease-in-out infinite;
+}
+
+.advisory-count {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent-deep);
+  color: var(--card);
+  padding: 3px 9px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.advisory h3 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.advisory p {
+  max-width: 64ch;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+  margin-top: 5px;
+}
+
+.advisory p b {
+  color: var(--ink);
+}
+
+.advisory-meta {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--accent-deep);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+/* the redaction fails when departure is imminent */
+.redacted-file .leak {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  animation: blink 1.6s ease-in-out infinite;
 }
 
 /* ---------- stats ---------- */
