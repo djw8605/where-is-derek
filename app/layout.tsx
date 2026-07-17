@@ -23,7 +23,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Where is Derek?",
   description:
-    "A live(ish) feed of one man's questionable travel schedule. Sightings accurate to within one state.",
+    "A live(ish) feed of one man's rough whereabouts. Sightings accurate to within one state.",
 };
 
 export default function RootLayout({

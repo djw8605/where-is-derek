@@ -321,6 +321,13 @@ body {
   letter-spacing: -0.02em;
 }
 
+.stat .classified-num {
+  font-size: clamp(30px, 4vw, 40px);
+  color: var(--accent-deep);
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+
 .stat .label {
   font-family: var(--font-mono), monospace;
   font-size: 11px;
@@ -337,7 +344,7 @@ body {
   margin-top: 3px;
 }
 
-/* ---------- migrations ---------- */
+/* ---------- classified future movement ---------- */
 
 .migrations {
   margin-top: 44px;
@@ -365,142 +372,72 @@ body {
   color: var(--ink-soft);
 }
 
-.trip-list {
-  list-style: none;
-  border-top: 1.5px solid var(--ink);
-}
-
-.trip {
+.classified-card {
   display: grid;
-  grid-template-columns: 130px 1fr auto auto;
-  gap: 8px 22px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  gap: 24px;
   align-items: center;
-  padding: 15px 4px;
-  border-bottom: 1px dashed var(--contour);
-  transition: background 0.2s;
-}
-
-.trip--playing {
-  background: rgba(236, 91, 19, 0.07);
-}
-
-.trip-play {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: transparent;
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-  padding: 6px 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.trip-play:hover {
-  background: var(--ink);
-  color: var(--card);
-}
-
-.trip-play.playing {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.trip-play.playing:hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
-}
-
-/* ---------- simulation banner ---------- */
-
-.preview-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  background: var(--ink);
-  color: var(--card);
   border: 1.5px solid var(--ink);
   border-radius: var(--radius);
-  padding: 11px 15px;
-  margin-bottom: 12px;
-  font-family: var(--font-mono), monospace;
-  font-size: 12.5px;
-  letter-spacing: 0.03em;
-  box-shadow: 4px 4px 0 rgba(34, 55, 42, 0.18);
+  padding: 22px;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 11px,
+      rgba(197, 207, 174, 0.23) 11px,
+      rgba(197, 207, 174, 0.23) 12px
+    ),
+    var(--card);
+  box-shadow: 5px 5px 0 rgba(34, 55, 42, 0.14);
 }
 
-.pv-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pv-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex: none;
-  animation: blink 1.6s ease-in-out infinite;
-}
-
-.pv-return {
+.classified-kicker {
+  display: inline-block;
+  margin-bottom: 7px;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #fff;
-  background: var(--accent);
-  border: none;
-  border-radius: 999px;
-  padding: 7px 14px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
+  color: var(--accent-deep);
 }
 
-.pv-return:hover {
-  background: var(--accent-deep);
+.classified-copy p {
+  max-width: 52ch;
+  font-size: 16px;
 }
 
-.trip .dates {
+.redacted-file {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 4px;
+  padding: 15px 16px 13px;
   font-family: var(--font-mono), monospace;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-soft);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.redacted-file b {
+  overflow: hidden;
+  color: var(--paper-deep);
+  font-size: 10px;
+  letter-spacing: -0.08em;
   white-space: nowrap;
 }
 
-.trip .where {
-  font-weight: 600;
-  font-size: 16.5px;
-}
-
-.trip .why {
-  font-weight: 400;
-  color: var(--ink-soft);
-}
-
-.trip .countdown {
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  color: var(--ink-soft);
-  white-space: nowrap;
-}
-
-.empty-trips {
-  padding: 22px 4px;
-  border-bottom: 1px dashed var(--contour);
+.redacted-file em {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding-top: 7px;
+  border-top: 1px dashed rgba(248, 249, 241, 0.35);
+  color: var(--contour);
   font-style: italic;
-  color: var(--ink-soft);
+  text-align: right;
 }
 
 /* ---------- footer ---------- */
@@ -541,18 +478,9 @@ body {
     min-height: 300px;
   }
 
-  .trip {
+  .classified-card {
     grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
-  .trip .countdown {
-    display: none;
-  }
-
-  .trip-play {
-    justify-self: start;
-    margin-top: 4px;
+    gap: 18px;
   }
 }
 

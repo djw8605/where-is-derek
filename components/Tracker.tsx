@@ -11,10 +11,8 @@ import {
   type Trip,
   startOfToday,
   findCurrentTrip,
-  upcomingTrips,
   completedTrips,
   daysAfieldThisYear,
-  daysUntil,
   formatRange,
   formatCoords,
   haversineMiles,
@@ -41,24 +39,12 @@ const BADGES = {
 
 export default function Tracker({ schedule }: { schedule: Schedule }) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const mapFrame = useRef<HTMLElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
   const [today, setToday] = useState<Date | null>(null);
   const [sighting, setSighting] = useState<Sighting | null>(null);
   const [geoFailed, setGeoFailed] = useState(false);
-  // When set, the map + report card pretend it's this trip's travel dates.
-  const [previewTrip, setPreviewTrip] = useState<Trip | null>(null);
-
-  function playTrip(trip: Trip) {
-    setPreviewTrip(trip);
-    mapFrame.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function returnToLive() {
-    setPreviewTrip(null);
-  }
 
   // Date is resolved on the client so a statically-exported page is always
   // current for the viewer, not for whenever the site was last built.
@@ -96,8 +82,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
 
     async function locate() {
       const day = today as Date;
-      // A previewed trip wins; otherwise report wherever today lands.
-      const trip = previewTrip ?? findCurrentTrip(schedule.trips, day);
+      const trip = findCurrentTrip(schedule.trips, day);
 
       if (!trip) {
         if (!cancelled) {
@@ -185,15 +170,11 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
     return () => {
       cancelled = true;
     };
-  }, [today, schedule, previewTrip]);
+  }, [today, schedule]);
 
-  const isPreview = previewTrip !== null;
   const kind = sighting ? (sighting.trip?.type ?? "home") : null;
-  const upcoming = today ? upcomingTrips(schedule.trips, today) : [];
   const completed = today ? completedTrips(schedule.trips, today).length : 0;
   const afield = today ? daysAfieldThisYear(schedule.trips, today) : 0;
-  const nextTrip = upcoming[0] ?? null;
-  const nextDeparture = nextTrip && today ? daysUntil(nextTrip.start, today) : null;
 
   return (
     <main className="wrap">
@@ -210,29 +191,14 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         </p>
       </header>
 
-      {isPreview && previewTrip && (
-        <div className="preview-bar" role="status">
-          <span className="pv-label">
-            <span className="pv-dot" />
-            Simulation — playing {previewTrip.location} as if today were{" "}
-            {formatRange(previewTrip.start, previewTrip.end)}
-          </span>
-          <button type="button" className="pv-return" onClick={returnToLive}>
-            Return to live
-          </button>
-        </div>
-      )}
-
-      <section className="map-frame" aria-label="Sighting map" ref={mapFrame}>
+      <section className="map-frame" aria-label="Sighting map">
         <div ref={mapContainer} className="map" />
         <span className="corner">
-          {isPreview
-            ? "Signal: simulation"
-            : kind
-              ? kind === "home"
-                ? "Signal: strong"
-                : "Signal: roaming"
-              : "Acquiring…"}
+          {kind
+            ? kind === "home"
+              ? "Signal: strong"
+              : "Signal: roaming"
+            : "Acquiring…"}
         </span>
 
         <div className="report" role="status">
@@ -316,64 +282,33 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
           <div className="sub">Round trips, confirmed returns.</div>
         </div>
         <div className="stat">
-          <div className="num">
-            {nextDeparture === null ? "—" : nextDeparture}
-          </div>
-          <div className="label">Days until next departure</div>
-          <div className="sub">
-            {nextTrip
-              ? `Destination: ${nextTrip.location}.`
-              : "The suitcase rests. For now."}
-          </div>
+          <div className="num classified-num">Likely</div>
+          <div className="label">More migrations this year?</div>
+          <div className="sub">The suitcase has declined to comment.</div>
         </div>
       </section>
 
-      <section className="migrations" aria-label="Planned migrations">
+      <section className="migrations" aria-label="Future travel notice">
         <div className="section-head">
-          <h3>Planned migrations</h3>
-          <span className="note">Subject to airline whims</span>
+          <h3>Future movement</h3>
+          <span className="note">Need-to-know basis</span>
         </div>
-        <ul className="trip-list">
-          {upcoming.length === 0 && (
-            <li className="empty-trips">
-              No migrations on the books. The specimen is conserving energy and
-              possibly mowing the lawn.
-            </li>
-          )}
-          {upcoming.map((trip) => {
-            const playing =
-              previewTrip?.start === trip.start &&
-              previewTrip?.location === trip.location;
-            return (
-              <li
-                className={`trip${playing ? " trip--playing" : ""}`}
-                key={`${trip.start}-${trip.location}`}
-              >
-                <span className="dates">{formatRange(trip.start, trip.end)}</span>
-                <span className="where">
-                  {trip.icon ? `${trip.icon} ` : ""}
-                  {trip.location}
-                  {trip.event ? <span className="why"> · {trip.event}</span> : null}
-                </span>
-                <span className="countdown">
-                  {today ? `T−${daysUntil(trip.start, today)} days` : ""}
-                </span>
-                <button
-                  type="button"
-                  className={`trip-play${playing ? " playing" : ""}`}
-                  onClick={() => (playing ? returnToLive() : playTrip(trip))}
-                  aria-label={
-                    playing
-                      ? `Stop previewing ${trip.location}`
-                      : `Preview ${trip.location} as if today`
-                  }
-                >
-                  {playing ? "◼ Playing" : "▶ Play"}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="classified-card">
+          <div className="classified-copy">
+            <span className="classified-kicker">Travel antenna: twitching</span>
+            <p>
+              Further roaming appears probable. Dates, destinations, and snack
+              strategy remain under wraps until a sighting is in progress.
+            </p>
+          </div>
+          <div className="redacted-file" aria-label="Future itinerary details withheld">
+            <span>Next departure</span>
+            <b aria-hidden="true">████████████</b>
+            <span>Destination</span>
+            <b aria-hidden="true">████████████████</b>
+            <em>Filed under: nice try</em>
+          </div>
+        </div>
       </section>
 
       <footer className="footer">
