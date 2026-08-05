@@ -44,6 +44,18 @@ export function findCurrentTrip(trips: Trip[], day: Date): Trip | null {
   return trips.find((t) => tripContains(t, day)) ?? null;
 }
 
+/**
+ * Departure eve: the trip that begins tomorrow, if any. Today may itself be
+ * mid-trip (back-to-back travel), so this is independent of findCurrentTrip.
+ */
+export function findTripStartingTomorrow(trips: Trip[], day: Date): Trip | null {
+  const tomorrow = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
+  return (
+    trips.find((t) => parseLocalDate(t.start).getTime() === tomorrow.getTime()) ??
+    null
+  );
+}
+
 export function upcomingTrips(trips: Trip[], day: Date): Trip[] {
   return trips
     .filter((t) => parseLocalDate(t.start) > day)

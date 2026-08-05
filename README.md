@@ -7,6 +7,12 @@ When Derek is traveling, the map highlights where he is (a whole state counts �
 this is a *rough* whereabouts operation). When he isn't, the station reports
 him **at rest in his native habitat: Nebraska**.
 
+On the day before any trip begins, the station posts a **Zugunruhe advisory**
+(the actual ornithology term for pre-migratory restlessness) with the next
+range, purpose, and a T−1 countdown. If that day is *itself* mid-trip —
+back-to-back travel — the advisory flags a **connecting migration** instead:
+the specimen proceeds directly to its next range without touching home.
+
 ## Updating the schedule
 
 All travel lives in [`data/schedule.json`](data/schedule.json). Add a trip,
