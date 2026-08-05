@@ -18,6 +18,37 @@ import {
   haversineMiles,
 } from "@/lib/schedule";
 
+const TRAIL_SOURCE_ID = "migration-trail";
+const TRAIL_LAYER_ID = "migration-trail-line";
+
+/**
+ * A small quadratic curve keeps long-distance trips from reading as a ruler
+ * laid across the map. This is deliberately cartographic rather than a
+ * navigationally accurate flight path.
+ */
+function migrationArc(
+  from: [number, number],
+  to: [number, number],
+): [number, number][] {
+  const [fromLng, fromLat] = from;
+  const [toLng, toLat] = to;
+  const distance = Math.hypot(toLng - fromLng, toLat - fromLat);
+  const bend = Math.min(8, Math.max(1.7, distance * 0.18));
+  const midpoint: [number, number] = [
+    (fromLng + toLng) / 2,
+    (fromLat + toLat) / 2 + bend,
+  ];
+
+  return Array.from({ length: 25 }, (_, index) => {
+    const t = index / 24;
+    const inverse = 1 - t;
+    return [
+      inverse ** 2 * fromLng + 2 * inverse * t * midpoint[0] + t ** 2 * toLng,
+      inverse ** 2 * fromLat + 2 * inverse * t * midpoint[1] + t ** 2 * toLat,
+    ];
+  });
+}
+
 interface Sighting {
   trip: Trip | null; // null → home
   center: [number, number];
@@ -172,6 +203,121 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
     };
   }, [today, schedule]);
 
+  useEffect(() => {
+    if (!today || !MAPBOX_TOKEN) return;
+    const reportDay: Date = today;
+    const map = mapRef.current;
+    if (!map) return;
+    const trailMap: mapboxgl.Map = map;
+
+    let cancelled = false;
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 12,
+      className: "migration-popup",
+    });
+
+    function removeTrail() {
+      if (!trailMap.isStyleLoaded()) return;
+      if (trailMap.getLayer(TRAIL_LAYER_ID)) trailMap.removeLayer(TRAIL_LAYER_ID);
+      if (trailMap.getSource(TRAIL_SOURCE_ID)) trailMap.removeSource(TRAIL_SOURCE_ID);
+    }
+
+    async function drawTrail() {
+      const historicTrips = completedTrips(schedule.trips, reportDay);
+      const resolvedTrips = await Promise.all(
+        historicTrips.map(async (trip) => {
+          if (trip.coordinates) return { trip, center: trip.coordinates };
+          try {
+            const geo = await geocode(trip.location, MAPBOX_TOKEN);
+            return { trip, center: geo.center };
+          } catch {
+            // One elusive sighting should not erase the rest of the trail.
+            return null;
+          }
+        }),
+      );
+
+      if (cancelled || !trailMap.isStyleLoaded()) return;
+      removeTrail();
+
+      const features = resolvedTrips.flatMap((entry) => {
+        if (!entry) return [];
+        const { trip, center } = entry;
+        return [{
+          type: "Feature" as const,
+          properties: {
+            location: trip.location,
+            dates: formatRange(trip.start, trip.end),
+            event: trip.event ?? "Purpose undisclosed",
+          },
+          geometry: {
+            type: "LineString" as const,
+            coordinates: migrationArc(schedule.home.coordinates, center),
+          },
+        }];
+      });
+
+      if (!features.length) return;
+
+      trailMap.addSource(TRAIL_SOURCE_ID, {
+        type: "geojson",
+        data: { type: "FeatureCollection", features },
+      });
+      trailMap.addLayer({
+        id: TRAIL_LAYER_ID,
+        type: "line",
+        source: TRAIL_SOURCE_ID,
+        paint: {
+          "line-color": "#71866d",
+          "line-width": 2,
+          "line-opacity": 0.58,
+          "line-dasharray": [1.2, 2.4],
+        },
+      });
+    }
+
+    function showTrailNote(event: mapboxgl.MapLayerMouseEvent) {
+      const feature = event.features?.[0];
+      if (!feature?.geometry || feature.geometry.type !== "LineString") return;
+      const properties = feature.properties ?? {};
+      trailMap.getCanvas().style.cursor = "pointer";
+      popup
+        .setLngLat(event.lngLat)
+        .setHTML(
+          `<span class="migration-popup-kicker">Highly documented appearance</span>` +
+            `<strong>${properties.location ?? "Unknown location"}</strong>` +
+            `<span>${properties.dates ?? "Dates withheld"} · ${properties.event ?? "Purpose undisclosed"}</span>`,
+        )
+        .addTo(trailMap);
+    }
+
+    function hideTrailNote() {
+      trailMap.getCanvas().style.cursor = "";
+      popup.remove();
+    }
+
+    async function initialiseTrail() {
+      await drawTrail();
+      if (cancelled || !trailMap.getLayer(TRAIL_LAYER_ID)) return;
+      trailMap.on("mouseenter", TRAIL_LAYER_ID, showTrailNote);
+      trailMap.on("mouseleave", TRAIL_LAYER_ID, hideTrailNote);
+    }
+
+    if (trailMap.isStyleLoaded()) void initialiseTrail();
+    else trailMap.once("load", initialiseTrail);
+
+    return () => {
+      cancelled = true;
+      trailMap.off("load", initialiseTrail);
+      trailMap.off("mouseenter", TRAIL_LAYER_ID, showTrailNote);
+      trailMap.off("mouseleave", TRAIL_LAYER_ID, hideTrailNote);
+      popup.remove();
+      removeTrail();
+    };
+  }, [today, schedule]);
+
   const kind = sighting ? (sighting.trip?.type ?? "home") : null;
   const completed = today ? completedTrips(schedule.trips, today).length : 0;
   const afield = today ? daysAfieldThisYear(schedule.trips, today) : 0;
@@ -200,6 +346,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
               : "Signal: roaming"
             : "Acquiring…"}
         </span>
+        <span className="trail-key">··· Prior migrations</span>
 
         <div className="report" role="status">
           {!sighting && !geoFailed && (

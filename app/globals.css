@@ -121,6 +121,23 @@ body {
   border-radius: 4px;
 }
 
+.trail-key {
+  position: absolute;
+  top: 45px;
+  right: 14px;
+  z-index: 5;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(248, 249, 241, 0.88);
+  border: 1px solid var(--contour);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
 /* ---------- field report card ---------- */
 
 .report {
@@ -285,6 +302,46 @@ body {
 
 .report-icon {
   font-size: 0.9em;
+}
+
+.mapboxgl-popup.migration-popup {
+  max-width: 250px;
+}
+
+.migration-popup .mapboxgl-popup-content {
+  display: grid;
+  gap: 3px;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 5px;
+  box-shadow: 3px 3px 0 rgba(34, 55, 42, 0.2);
+  font-family: var(--font-mono), monospace;
+  line-height: 1.35;
+}
+
+.migration-popup .mapboxgl-popup-tip {
+  border-top-color: var(--card);
+}
+
+.migration-popup-kicker {
+  color: var(--accent-deep);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.migration-popup strong {
+  font-family: var(--font-display), sans-serif;
+  font-size: 17px;
+  line-height: 1.1;
+}
+
+.migration-popup .mapboxgl-popup-content > span:last-child {
+  color: var(--ink-soft);
+  font-size: 10px;
 }
 
 @keyframes sonar {
