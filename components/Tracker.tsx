@@ -22,6 +22,7 @@ import {
 
 const TRAIL_SOURCE_ID = "migration-trail";
 const TRAIL_LAYER_ID = "migration-trail-line";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 /**
  * A small quadratic curve keeps long-distance trips from reading as a ruler
@@ -508,7 +509,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         <figure className="trail-cam-photo">
           <div className="photo-stamp">Field cam · 04</div>
           <Image
-            src="/images/derek-on-the-move.png"
+            src={`${BASE_PATH}/images/derek-on-the-move.png`}
             alt="An exuberant beaver-like traveler with a bindle walks through a meadow past signs pointing to new adventures and fresh grass."
             width={1536}
             height={1024}
