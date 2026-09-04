@@ -502,6 +502,141 @@ body {
   margin-top: 3px;
 }
 
+/* ---------- supplemental trail-cam evidence ---------- */
+
+.trail-cam {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+  gap: 26px;
+  align-items: center;
+  margin-top: 44px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 6% 90%, rgba(236, 91, 19, 0.13) 0 2px, transparent 2.5px) 0 0 / 18px 18px,
+    repeating-linear-gradient(0deg, transparent 0 32px, rgba(197, 207, 174, 0.28) 32px 33px),
+    var(--card);
+  box-shadow: 6px 6px 0 rgba(34, 55, 42, 0.16);
+}
+
+.trail-cam::before {
+  content: "CONFIDENTIALISH";
+  position: absolute;
+  top: 13px;
+  left: -34px;
+  z-index: 1;
+  padding: 3px 38px;
+  transform: rotate(-38deg);
+  background: var(--accent);
+  color: var(--card);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.trail-cam-copy {
+  position: relative;
+  z-index: 2;
+  padding: 12px 0 4px;
+}
+
+.trail-cam-kicker {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--accent-deep);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.trail-cam h3 {
+  max-width: 11ch;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(30px, 3.6vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.trail-cam-copy > p:not(.trail-cam-note) {
+  max-width: 37ch;
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: 15.5px;
+}
+
+.trail-cam-note {
+  display: flex;
+  gap: 7px;
+  align-items: baseline;
+  margin-top: 15px;
+  padding-top: 11px;
+  border-top: 1px dashed var(--contour);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.trail-cam-note span {
+  color: var(--accent);
+}
+
+.trail-cam-photo {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 7px 7px 32px;
+  transform: rotate(1.35deg);
+  border: 1px solid rgba(34, 55, 42, 0.32);
+  background: #fffdf2;
+  box-shadow: 5px 7px 0 rgba(34, 55, 42, 0.2), 0 9px 20px rgba(34, 55, 42, 0.12);
+}
+
+.trail-cam-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(0.83) contrast(1.04) sepia(0.08);
+}
+
+.photo-stamp {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+  padding: 4px 7px;
+  transform: rotate(-2deg);
+  border: 1px solid rgba(248, 249, 241, 0.75);
+  background: rgba(34, 55, 42, 0.88);
+  color: var(--card);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.trail-cam-photo figcaption {
+  position: absolute;
+  right: 15px;
+  bottom: 9px;
+  left: 15px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.2;
+  text-align: center;
+}
+
 /* ---------- classified future movement ---------- */
 
 .migrations {
@@ -639,6 +774,21 @@ body {
   .classified-card {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .trail-cam {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .trail-cam h3 {
+    max-width: 14ch;
+  }
+
+  .trail-cam-photo {
+    width: calc(100% - 4px);
+    transform: rotate(0.65deg);
   }
 }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -488,6 +489,35 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
           <div className="label">More migrations this year?</div>
           <div className="sub">The suitcase has declined to comment.</div>
         </div>
+      </section>
+
+      <section className="trail-cam" aria-labelledby="trail-cam-title">
+        <div className="trail-cam-copy">
+          <span className="trail-cam-kicker">Supplemental field evidence · exhibit A</span>
+          <h3 id="trail-cam-title">Possible Derek, pictured en route</h3>
+          <p>
+            Trail-cam reconstruction of the specimen&apos;s natural migration
+            pattern: following the lure of new adventures, fresh grass, and a
+            suspiciously well-packed bindle.
+          </p>
+          <p className="trail-cam-note">
+            <span aria-hidden="true">⚠</span> Species identification remains
+            contested. Vibes: conclusive.
+          </p>
+        </div>
+        <figure className="trail-cam-photo">
+          <div className="photo-stamp">Field cam · 04</div>
+          <Image
+            src="/images/derek-on-the-move.png"
+            alt="An exuberant beaver-like traveler with a bindle walks through a meadow past signs pointing to new adventures and fresh grass."
+            width={1536}
+            height={1024}
+            sizes="(max-width: 720px) calc(100vw - 42px), 430px"
+          />
+          <figcaption>
+            Evidence supports the theory that he was &ldquo;just stepping out.&rdquo;
+          </figcaption>
+        </figure>
       </section>
 
       <section className="migrations" aria-label="Future travel notice">
