@@ -494,29 +494,32 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
 
       <section className="trail-cam" aria-labelledby="trail-cam-title">
         <div className="trail-cam-copy">
-          <span className="trail-cam-kicker">Supplemental field evidence · exhibit A</span>
-          <h3 id="trail-cam-title">Possible Derek, pictured en route</h3>
+          <span className="trail-cam-kicker">Supplemental field evidence · exhibit B</span>
+          <h3 id="trail-cam-title">Possible Derek, pictured canal-side</h3>
           <p>
-            Trail-cam reconstruction of the specimen&apos;s natural migration
-            pattern: following the lure of new adventures, fresh grass, and a
-            suspiciously well-packed bindle.
+            Specimen recorded well outside his documented range, foraging on a
+            stroopwafel at terrace speed. Note the flat cap, acquired within
+            hours of landing: textbook protective mimicry. The dam-building
+            instinct appears fully sublimated by a country that already did it
+            at national scale.
           </p>
           <p className="trail-cam-note">
             <span aria-hidden="true">⚠</span> Species identification remains
-            contested. Vibes: conclusive.
+            contested. Coffee identification: espresso, confirmed.
           </p>
         </div>
         <figure className="trail-cam-photo">
-          <div className="photo-stamp">Field cam · 04</div>
+          <div className="photo-stamp">Canal cam · 05</div>
           <Image
-            src={`${BASE_PATH}/images/derek-on-the-move.png`}
-            alt="An exuberant beaver-like traveler with a bindle walks through a meadow past signs pointing to new adventures and fresh grass."
+            src={`${BASE_PATH}/images/derek-in-amsterdam.png`}
+            alt="A cheerful woodchuck in a flat cap and red bandana raises a Café de Dam espresso cup at an Amsterdam canal-side terrace, a stroopwafel on a Delft plate in front of him and parked bicycles behind."
             width={1536}
             height={1024}
             sizes="(max-width: 720px) calc(100vw - 42px), 430px"
           />
           <figcaption>
-            Evidence supports the theory that he was &ldquo;just stepping out.&rdquo;
+            Bicycles unchewed. €4,50 paid in full. He is, by all appearances,
+            blending in.
           </figcaption>
         </figure>
       </section>
