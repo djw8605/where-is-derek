@@ -494,32 +494,32 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
 
       <section className="trail-cam" aria-labelledby="trail-cam-title">
         <div className="trail-cam-copy">
-          <span className="trail-cam-kicker">Supplemental field evidence · exhibit B</span>
-          <h3 id="trail-cam-title">Possible Derek, pictured canal-side</h3>
+          <span className="trail-cam-kicker">Supplemental field evidence · exhibit C</span>
+          <h3 id="trail-cam-title">Two specimens, pictured pair-bonded</h3>
           <p>
-            Specimen recorded well outside his documented range, foraging on a
-            stroopwafel at terrace speed. Note the flat cap, acquired within
-            hours of landing: textbook protective mimicry. The dam-building
-            instinct appears fully sublimated by a country that already did it
-            at national scale.
+            Update: the specimen is not migrating alone. A second individual
+            has been logged alongside him — straw hat, pearls, plumage
+            considerably better coordinated — the two proceeding along the
+            canal in tight formation and holding paws at roughly two
+            kilometers per hour, which in Amsterdam is the exact speed at
+            which one is struck by a bicycle.
           </p>
           <p className="trail-cam-note">
             <span aria-hidden="true">⚠</span> Species identification remains
-            contested. Coffee identification: espresso, confirmed.
+            contested. Pair bond: conclusive.
           </p>
         </div>
         <figure className="trail-cam-photo">
-          <div className="photo-stamp">Canal cam · 05</div>
+          <div className="photo-stamp">Canal cam · 06</div>
           <Image
-            src={`${BASE_PATH}/images/derek-in-amsterdam.png`}
-            alt="A cheerful woodchuck in a flat cap and red bandana raises a Café de Dam espresso cup at an Amsterdam canal-side terrace, a stroopwafel on a Delft plate in front of him and parked bicycles behind."
+            src={`${BASE_PATH}/images/derek-and-spouse-amsterdam.png`}
+            alt="Two cheerful woodchucks stroll hand in hand along an Amsterdam canal: one in a flat cap, vest and red bandana, the other in a straw hat, floral dress, pearls and cardigan, with bicycles and an I-heart-Amsterdam sign behind them."
             width={1536}
             height={1024}
             sizes="(max-width: 720px) calc(100vw - 42px), 430px"
           />
           <figcaption>
-            Bicycles unchewed. €4,50 paid in full. He is, by all appearances,
-            blending in.
+            Bicycles still unchewed. Paws otherwise occupied.
           </figcaption>
         </figure>
       </section>
