@@ -330,6 +330,7 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
   // specimen is chaining movements without touching the home range.
   const departing = today ? findTripStartingTomorrow(schedule.trips, today) : null;
   const connecting = Boolean(departing && sighting?.trip);
+  const isTraveling = Boolean(sighting?.trip);
 
   return (
     <main className="wrap">
@@ -492,37 +493,36 @@ export default function Tracker({ schedule }: { schedule: Schedule }) {
         </div>
       </section>
 
-      <section className="trail-cam" aria-labelledby="trail-cam-title">
-        <div className="trail-cam-copy">
-          <span className="trail-cam-kicker">Supplemental field evidence · exhibit C</span>
-          <h3 id="trail-cam-title">Two specimens, pictured pair-bonded</h3>
-          <p>
-            Update: the specimen is not migrating alone. A second individual
-            has been logged alongside him — straw hat, pearls, plumage
-            considerably better coordinated — the two proceeding along the
-            canal in tight formation and holding paws at roughly two
-            kilometers per hour, which in Amsterdam is the exact speed at
-            which one is struck by a bicycle.
-          </p>
-          <p className="trail-cam-note">
-            <span aria-hidden="true">⚠</span> Species identification remains
-            contested. Pair bond: conclusive.
-          </p>
-        </div>
-        <figure className="trail-cam-photo">
-          <div className="photo-stamp">Canal cam · 06</div>
-          <Image
-            src={`${BASE_PATH}/images/derek-and-spouse-amsterdam.png`}
-            alt="Two cheerful woodchucks stroll hand in hand along an Amsterdam canal: one in a flat cap, vest and red bandana, the other in a straw hat, floral dress, pearls and cardigan, with bicycles and an I-heart-Amsterdam sign behind them."
-            width={1536}
-            height={1024}
-            sizes="(max-width: 720px) calc(100vw - 42px), 430px"
-          />
-          <figcaption>
-            Bicycles still unchewed. Paws otherwise occupied.
-          </figcaption>
-        </figure>
-      </section>
+      {isTraveling && (
+        <section className="trail-cam" aria-labelledby="trail-cam-title">
+          <div className="trail-cam-copy">
+            <span className="trail-cam-kicker">Supplemental field evidence · exhibit A</span>
+            <h3 id="trail-cam-title">Possible Derek, pictured en route</h3>
+            <p>
+              Trail-cam reconstruction of the specimen&apos;s natural migration
+              pattern: following the lure of new adventures, fresh grass, and a
+              suspiciously well-packed bindle.
+            </p>
+            <p className="trail-cam-note">
+              <span aria-hidden="true">⚠</span> Species identification remains
+              contested. Vibes: conclusive.
+            </p>
+          </div>
+          <figure className="trail-cam-photo">
+            <div className="photo-stamp">Field cam · 04</div>
+            <Image
+              src={`${BASE_PATH}/images/derek-on-the-move.png`}
+              alt="An exuberant woodchuck traveler with a bindle walks through a meadow past signs pointing to new adventures and fresh grass."
+              width={1536}
+              height={1024}
+              sizes="(max-width: 720px) calc(100vw - 42px), 430px"
+            />
+            <figcaption>
+              Evidence supports the theory that he was &ldquo;just stepping out.&rdquo;
+            </figcaption>
+          </figure>
+        </section>
+      )}
 
       <section className="migrations" aria-label="Future travel notice">
         <div className="section-head">
